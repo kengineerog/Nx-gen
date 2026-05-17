@@ -1,915 +1,691 @@
-# Nx-gen
-A cluster for tinkerers and commercial purposes alike.
-
-# NX-GEN: Heterogeneous High-Density Compute Cluster
-## Complete Feature Specification & Technical Architecture
+# NX-GEN (THE HIVE): Heterogeneous High-Density Compute Cluster
+## Complete Feature Specification & Manufacturing Blueprint v2.1
 
 ---
 
 ## EXECUTIVE OVERVIEW
 
-**Nx-Gen** (codenamed "The Hive") is a revolutionary, ultra-dense, modular supercomputing cluster system that combines enterprise-grade compute power with consumer-friendly aesthetics and industrial art design. It is available in five configurable sizes (10, 25, 50, 75, 100 nodes) with a standardized, clear-chassis design featuring floating magnetic-levitation cooling systems, real-time hardware security, and microsecond-level synchronization.
+**Nx-Gen** (codenamed "The Hive") is a revolutionary, ultra-dense, modular supercomputing cluster engineered for absolute performance, data integrity, and aesthetic excellence. Available in five configurable sizes (10, 25, 50, 75, 100 nodes), the Hive features a crystal-clear transparent chassis with magnetic-levitation cooling, soldered-down de-lidded processors, PCIe Gen 6 MasterFlow interconnect, and a fully air-gapped hardware security architecture.
 
-The system targets high-end enthusiasts, research institutions, AI development teams, render farms, and edge-computing simulation labs. Support for NVIDIA Tesla V100 (SXM2/SXM3) alongside Intel Panther Lake creates an unprecedented fusion of enterprise data-center class compute with desktop form factor.
+The system targets AI researchers, data-center engineers, cloud-native developers, edge-computing labs, and ultra-high-performance computing enthusiasts who demand zero-compromise engineering.
 
 ---
 
 ## PHYSICAL ARCHITECTURE
 
-### Form Factor & Node Specifications
-
-**Node Dimensions:** 120mm × 250mm × 20mm (expanded from original 100×60×15mm for Tesla V100 compatibility)
+### Updated Node Form Factor
+**Node Dimensions:** 120mm × 250mm × 20mm (expanded for enterprise-class silicon)
 **Global Chassis Size (100-Node):** ~500mm × 400mm × 200mm (slightly larger than a 21-inch monitor)
-**Weight:** 30-40kg per full 100-node cluster (includes all supercaps, liquid cooling, and copper)
+**Available Cluster Sizes:** Hive-10, Hive-25, Hive-50, Hive-75, Hive-100
+**Total System Power:** Up to 6,000W peak (with all 100 nodes at maximum load)
+**Weight (Hive-100):** ~40-50kg with integrated cooling and supercapacitor banks
 
-### Thermal Performance Validation
+### Thermal Performance (Validated by Simulation)
+- **Full-Load Temperature:** ~60°C under sustained 300W+ per-node workloads
+- **Airflow Rate:** 35 CFM per node (validated via 15°C delta calculation)
+- **Maximum MagLev Fan RPM:** 25,000 RPM (production); tested to 35,000 RPM (safety margin)
+- **Minimum Fan RPM:** 500 RPM hard floor (prevents heat soak during idle)
 
-**Test Configuration:** Intel Panther Lake + NVIDIA Tesla V100 SXM (300W full load)
+### Manufacturing Reality: Monolithic Soldered Architecture
+**Critical Manufacturing Requirement:** All CPUs, GPUs, and memory are **directly soldered onto the node motherboard** using Surface Mount Technology (SMT). NO mechanical sockets, NO PCIe cards, NO standard DIMM slots.
 
-**Validated Thermal Results:**
-- Steady-state temperature: ~60°C under full 300W load
-- Ambient baseline: 25°C
-- Exhaust temperature rise: ΔT ≈ 15°C
-- Required airflow: ~36 CFM (validated achievable by 25k RPM 50mm blower)
-- Thermal margin: Excellent; no throttling required
-- Stress test duration: 72+ hours continuous operation
+- **De-Lidded Silicon:** All processors are chemically or mechanically de-lidded to expose raw silicon dies for direct-on-die liquid-metal thermal interface
+- **Direct-on-Die Cooling:** Liquid metal (indium-gallium alloy) or custom phase-change material applied directly to bare silicon (0.1mm skived copper micro-channels)
+- **Storage Integration:** All NVMe SSDs and SATA drives are stripped of mechanical brackets; high-speed flash controller and NAND packages soldered directly to PCB
+- **Memory Mounting:** All system RAM and ECC parity memory soldered as BGA packages directly to the 24-layer Megtron 6 substrate
+- **Z-Height Budget:** Every component optimized to fit within 20mm total capsule thickness
 
-**Performance by Node Type:**
-- Idle (500 RPM fan): 25-30°C
-- Light load (5-10k RPM): 35-45°C
-- Heavy load (15-20k RPM): 45-60°C
-- Peak load (25k RPM): 55-70°C
-- **Critical threshold:** 85°C (automatic thermal throttle)
-- **Safe max:** 105°C (protective shutdown)
+### 100-Hour Automated Factory Burn-In (MANDATORY)
+Every single node undergoes an absolute gauntlet of validation before shipment:
+- **Hours 0–24:** Thermal cycle shock (10°C to 85°C), magnetic levitation calibration, pump durability cycling
+- **Hours 25–75:** Brutal power transient testing, supercapacitor abuse, emergency data-dump simulation (thousands of power cycles)
+- **Hours 76–100:** Maximum-throughput PCIe Gen 6 MasterFlow stress (300 GB/s continuous), on-die memory error correction testing, PAM4 signal eye-diagram calibration
 
-### Node Compute Options
-
-Each worker node can be configured as one of eleven distinct architectures:
-
-#### 1. Intel Panther Lake (x86 Base)
-- Solo Panther Lake CPU (general-purpose compute)
-- 16 cores (4 Cougar Cove P-cores, 8 Darkmont E-cores, 4 LP E-cores)
-- Integrated NPU 5 (50 TOPS)
-- No GPU variant
-- Thermal: 35-45W typical
-
-#### 2-6. Intel Panther Lake + RTX Blackwell Mobile GPUs
-- **RTX 5050 Mobile:** 70-90W TGP; 8,192 CUDA cores
-- **RTX 5060 Mobile:** 100-115W TGP; 12,800 CUDA cores
-- **RTX 5070 Mobile:** 130-150W TGP; 16,384 CUDA cores
-- **RTX 5080 Mobile:** 160-190W TGP; 18,944 CUDA cores
-- **RTX 5090 Mobile:** 200W+ TGP; 21,504 CUDA cores
-
-All RTX variants use custom PCIe x8 bridging to Panther Lake host; dual-radiator + 25k RPM fan handles thermal load.
-
-#### 7. **Intel Panther Lake + NVIDIA Tesla V100 (SXM2/SXM3)** [FLAGSHIP CONFIGURATION]
-- Intel Panther Lake CPU: 16 cores, NPU 5
-- NVIDIA Tesla V100: 5,120 CUDA cores (SXM2: 16GB/32GB HBM2, SXM3: 32GB HBM3)
-- Paired heterogeneous architecture via custom PCIe x8 NVLink bridge
-- Memory bandwidth: 900 GB/s HBM2 internal + LPDDR5x system RAM
-- Thermal envelope: 300W+ under synthetic load (validated at 60°C)
-- Target market: High-end AI training, scientific computing, professional rendering
-- **Design note:** 120×250×20mm form factor was specifically expanded to accommodate V100 + liquid cooling
-
-#### 8. Storage Node (Panther Lake + High-Capacity Disk Array)
-- Intel Panther Lake CPU for RAID management and data orchestration
-- **Option A:** 6× NVMe Gen 5 SSDs + 2× 2.5" SATA SSDs (mixed fast/reliable)
-- **Option B:** 6× NVMe Gen 5 SSDs + 4× 2.5" SATA SSDs (maximum capacity)
-- Use case: Cluster-wide data aggregation, caching, backup, or NAS
-- Can run as distributed cache or direct-attached storage for all nodes
-
-#### 9. NVIDIA Jetson (ARM AI Accelerator)
-- Specialized for edge AI, robotics, computer vision
-- Built-in CUDA support
-- High-efficiency thermal profile (minimal cooling needs)
-- Runs Ubuntu Server natively
-
-#### 10. Rockchip RK3588 (ARM Media Processor)
-- Video transcoding, lightweight Linux tasks
-- Minimal cooling requirements in standard config
-- **Full water cooling available** for aggressive overclocking
-- Can sustain 2-3× stock frequency via dual-radiator + 25k RPM fan
-- MicroLED profile: Low-intensity electric blue breathing pattern (high-efficiency indication)
-
-#### 11. MediaTek MT6895 / Dimensity (ARM 5G/Mobile)
-- High-efficiency 5G/mobile environment simulation
-- Specialized for network testing and protocol validation
-
-### Master Node (Dual-Master Active-Active Architecture)
-
-**Master Node A: UI Host & Orchestrator**
-- Intel Panther Lake CPU (no GPU)
-- Does zero compute work; handles only task scheduling and GUI rendering
-- Hosts the Master GUI dashboard on HDMI 2.1 output
-- Manages Docker container registry metadata (on M.2 NVMe)
-- Intel Optane persistent memory (200GB+)
-- Dual eMMC storage:
-  - 128GB Factory-Locked eMMC (immutable OS)
-  - M.2 NVMe Slot (user-upgradable, holds Docker registry metadata only)
-- Never shuts down; always in low-power standby when idle
-
-**Master Node B: Cache Engine & Telemetry Interceptor**
-- Identical Intel Panther Lake CPU to Master Node A
-- Pulls real-time 12-sensor 6DoF telemetry from all 100 ESP32-P4 Guardian chips
-- Maintains high-speed in-memory cache of cluster state (Redis-style)
-- Provides instant failover if Master Node A fails
-- Uses Zero-Copy RDMA to sync telemetry directly into Master A's memory (no CPU overhead)
-- Communicates via dedicated high-bandwidth management lane on backplane
-
-**Combined Master Responsibilities:**
-- 10× 10GbE Ethernet ports (RJ45/SFP+) for external connectivity
-- 2× 100GbE QSFP28 ports for enterprise uplink or inter-chassis stacking
-- One large 120mm MagLev levitating fan at cluster centerpiece
-- Orchestrates staggered 0.5-second node wake-up sequence
-- Monitors global 750F supercapacitor charging (5-second pre-charge for Hive-100)
-- Runs custom Kubernetes-like bare-metal provisioning engine
-- Implements IEEE 1588 PTP hardware clock for microsecond synchronization
+**Failure Criteria:** Any single bit-flip, solder micro-fracture, or seal degradation triggers automatic capsule reclamation.
 
 ---
 
-## POWER DELIVERY ARCHITECTURE
+## COMPUTE NODE ARCHITECTURE (6 CPU ARCH GROUPS)
 
-### Triple-Stage GaN Power System (Redundant & Regenerative)
+### TYPE 1: x86/64 Compute & Accelerators
+Pure compute-focused, high-throughput general-purpose nodes.
 
-#### Stage 1: External Redundant PSUs (Wall Outlet → 400V DC Backplane)
+1. **Intel Panther Lake (Solo x86)**
+   - 18A process, up to 16 cores
+   - General-purpose Linux/Windows Server
+   - 30-45W TDP
 
-**Input:**
-- Two standard AC wall outlets (240V recommended, 15A each maximum)
-- Dual GaN PSU modules (2kW each, running in load-sharing redundancy mode)
+2. **Intel Xeon 6 (Granite Rapids-SP) - Single Socket Only**
+   - 86 Redwood Cove P-cores
+   - 512-bit AVX-512, Intel AMX, 8,000 MT/s MRDIMM support
+   - **Mandatory ECC RAM:** True Sideband ECC (72-bit data bus with parity)
+   - 225W TDP (firmware-capped to thermal envelope)
+   - Enterprise virtualization, in-memory databases
 
-**Output:**
-- Clean 400V DC main backplane
-- Redundancy: If one 2kW module fails, the other continues alone
+3. **NVIDIA Tesla V100 (SXM2/SXM3) + Intel Panther Lake**
+   - Panther Lake host + 100-115W V100 GPU
+   - 16GB or 32GB GDDR7 VRAM
+   - 300W TGP combined
 
-**Pre-Charge Sequence (5 seconds):**
-1. 0.0-5.0 seconds: Current-limiting resistors control inrush while all supercaps charge
-2. 4.5-5.0 seconds: Voltage approaches 100% on all 400 backplane caps + 400 node-local caps (800 total 750F cells)
-3. 5.0 seconds: Resistors bypass; full multi-kilowatt power lanes open
+4. **NVIDIA GB10 Grace Blackwell Superchip**
+   - 20-core ARM Grace CPU (10× Cortex-X925 + 10× Cortex-A725)
+   - Blackwell Ultra GPU with native NVLink-C2C bridge (900 GB/s)
+   - 128GB LPDDR5X unified coherent memory
+   - 140W TDP
+   - 1 PFLOPS FP4 AI performance, native 70B-parameter LLM execution
 
-#### Stage 2: Per-Node Local GaN Conversion (Primary Power Path)
+5. **AMD Alveo V70 FPGA + Embedded x86 Host**
+   - Adaptive hardware accelerator for real-time signal processing
+   - 75W TGP, software-defined cryptography/SDR workloads
 
-**Every node contains a modular, 25mm × 25mm GaN power module:**
-- Input: 400V DC from backplane via custom PCIe x8 power pins
-- Output: Multiple rails
-  - 0.8V-1.1V for CPU/GPU logic (ultra-low dropout)
-  - 5V for pump/fan/sensors
-  - 12V for auxiliary circuits
-- Efficiency: 96-98% (GaN silicon generates minimal heat)
-- **Includes twin 750F supercapacitors inside PSU housing** (dual energy reserve)
-- Solid-state GaN isolation gates for microsecond power cutoff during hot-swap
-- Active Crowbar discharge circuit (dumps remaining energy to heat, prevents voltage leaks)
+### TYPE 2: x86/64 Heavy APU & CPU (Unified Memory Density)
 
-#### Stage 3: Per-Node Secondary AC-to-DC (Hot-Standby Failover)
+1. **AMD Ryzen AI Max+ 395 (Strix Halo)**
+   - 16 Zen 5 CPU cores + 40 RDNA 3.5 Compute Units
+   - 128GB LPDDR5X-8000 unified memory (256 GB/s bandwidth)
+   - XDNA 2 NPU (50 TOPS)
+   - 45-120W dynamic power
+   - Native unquantized 70B-parameter LLM execution on a single node
 
-**Each node has a secondary GaN module:**
-- **Always powered** from isolated AC lines (not the main 400V backplane)
-- Runs in zero-load standby at all times
-- **Continuously synchronized** with primary power (ready for instant switchover)
-- Takes over in <1 microsecond if primary 400V fails
-- Solid-state gate switch transitions power with zero voltage sag
-- Also includes twin 750F supercapacitors (independent backup reserve)
-- No inrush current risk; supercaps bridge the handoff seamlessly
+2. **AMD Ryzen AI 300/400 Series (Strix Point)**
+   - 15W to 54W ultra-efficient APU configuration
+   - Radeon 890M/990M iGPU
+   - Perfect for lightweight AI inference, edge deployment
 
-### Supercapacitor Energy Reserves (Multi-Tiered UPS)
+3. **AMD EPYC 5th-Gen "Turin" (High-Density Core)**
+   - **Single-socket configuration only**
+   - 128 cores / 256 threads, 512MB L3 cache, 5nm "Zen 5" cores
+   - 12-channel LPDDR5X memory bus matrix
+   - **Mandatory ECC RAM:** True Sideband ECC (72-bit protection)
+   - 128 lanes PCIe Gen 5.0 + CXL 2.0
+   - 240W TDP (firmware-capped)
+   - Ultra-high-density microservice orchestration, 100+ container clusters per node
 
-**Per Node (Inside GaN PSU):**
-- 2× 750F supercapacitors (internal to each GaN PSU module)
-- Total per node: 1,500 Farads
+4. **AMD Instinct MI300A Exascale Data-Center APU**
+   - 24× Zen 4 EPYC cores + 304× CDNA 3 Matrix cores
+   - 128GB HBM3 unified memory (5.3 TB/s bandwidth)
+   - Full Unified Physical Memory (UPM) architecture
+   - 250W TDP (firmware-capped)
+   - Enterprise-grade double-precision math, distributed AI training
 
-**Backplane Global Reserve:**
-- Hive-10: 10× 750F caps
-- Hive-25: 25× 750F caps
-- Hive-50: 50× 750F caps
-- Hive-75: 75× 750F caps
-- Hive-100: 100× 750F caps
+### TYPE 3: ARM Cloud Enterprise (High-Core Density)
 
-**Total Supercap Count Across Entire Cluster:**
-- Hive-10: 20 node-local + 10 backplane = **30× 750F** (22.5 kF)
-- Hive-100: 200 node-local + 100 backplane = **300× 750F** (225 kF)
+1. **AmpereOne Cloud-Native (192 Cores)**
+   - 192 single-threaded custom ARM cores @ 3.0 GHz constant
+   - 53MB cache pool, single-threaded design eliminates noisy-neighbor penalties
+   - 130-140W TDP
+   - High-throughput multi-tenant containerization
+   - Cloud-native infrastructure in a single node pod
 
-**Supercap Purpose:**
-- Provides 5-second soft-start pre-charge on power-on
-- Enables graceful LPDDR4x/LPDDR5x + GDDR7 emergency backup (2.7 seconds for 32GB dump)
-- Sustains node levitation and critical circuits during hot-swap extraction
-- Regenerative fan braking extends backup window by additional 2-3 seconds
-- Zero voltage leaks or discharge when node is physically removed
+2. **Ampere Altra Max (128 Cores)**
+   - 128 single-threaded ARM Neoverse N1 cores
+   - 8-channel DDR4/LPDDR5 memory routing
+   - 150W under full synthetic load
+   - Enterprise cloud compilation, native DevOps density
 
-### Typical Power Consumption Profiles
+3. **Snapdragon X2 Elite Extreme**
+   - 18 custom Oryon cores (12 Prime @ 5.0 GHz + 6 Performance)
+   - 53MB total cache
+   - 80+ TOPS hardware-accelerated AI
+   - Workstation-class ARM performance
+   - 45-60W TDP
 
-- **Idle (500 RPM fans, no compute):** 2-3 kW
-- **Moderate Load (10-15k RPM fans, standard nodes computing):** 3-5 kW
-- **Heavy Load (25k RPM fans, all nodes with RTX 5060+):** 5-7 kW
-- **Peak Theoretical (all 100 nodes at 300W each):** 30 kW (never achieved in practice)
-- **Designed Safe Maximum:** 7 kW continuous
+4. **IBM Power11 Enterprise Heavyweight**
+   - Mainframe-grade reliability and cryptography
+   - Hardware NIST-approved quantum-safe encryption in silicon
+   - Open Memory Interface (OMI) Odyssey memory buffers (handles transient faults at hardware level)
+   - Silicon-integrated Cyber Vault Engine for ransomware detection
+   - Mission-critical banking, healthcare, and financial applications
+
+### TYPE 4: ARM Multiplex Mobile Fleets (High-Density Virtualization)
+
+1. **Quad-Carrier Snapdragon Dimensity 9500 Blade**
+   - 4× independent MediaTek Dimensity 9500 SoCs on single node
+   - All-Big-Core architecture (Cortex-X925 + Cortex-X4 prime cores)
+   - Native on-device agentic LLM NPU per chip
+   - Zero software emulation overhead, pure hardware virtualization
+   - 60W total
+
+2. **Octa-Rockchip RK3588 Carrier Cluster**
+   - 8× independent RK3588 SoCs (4× Cortex-A76 + 4× Cortex-A55 + 6 TOPS NPU per SoC)
+   - Internal 10GbE switch networking all 8 units
+   - 80W total
+   - DIY-friendly, budget entry-tier clustering, learning environments
+   - Can be heavily overclocked due to full liquid cooling
+
+3. **Quad Snapdragon 8 Elite Gen 5 Carrier**
+   - 4× independent flagship mobile chipsets
+   - 3nm process, top-tier Qualcomm Oryon cores
+   - Edge AI fleet simulation, native mobile environment testing
+
+### TYPE 5: RISC-V Open-Silicon & Bare-Metal Development
+
+1. **Alibaba XuanTie C950 Server CPU**
+   - Custom RISC-V cores, 5nm process, 3.2 GHz
+   - Native RISC-V Attached Matrix Extension (AME) for on-CPU sparse AI acceleration
+   - Minimal external memory access latency
+   - Open-source development, agentic AI prototyping
+
+2. **Ventana Veyron V2**
+   - Modular, chiplet-based RISC-V server architecture
+   - Enterprise scalability, custom configuration
+   - Open-source compiler ecosystems
+
+3. **Sophgo 64-Core RISC-V Processor**
+   - Massive parallel multi-threaded cloud workload distribution
+   - 64 physical open-source cores
+
+### TYPE 6: Heavy Storage Blades (110,000 MB/s Data Feeding - PCIe Gen 6)
+
+**Intel Panther Lake Control Processor + Storage Array:**
+- **Configuration A:** 4× PCIe Gen 6 x4 NVMe M.2 SSDs (soldered) + 2× 2.5-inch SATA SSDs (soldered)
+- **Configuration B:** 4× PCIe Gen 6 x4 NVMe M.2 SSDs (soldered) + 4× 2.5-inch SATA SSDs (soldered)
+
+**Performance (Gen 6 Upgraded):**
+- Sequential read/write: Up to 110,000 MB/s (110 GB/s) in RAID 0 configuration
+- Hardware RAID controller with active thermal monitoring
+- Guardian P4 monitors drive health; if any drive hits thermal throttle, fan ramps to high static-pressure mode
+- On emergency power loss: Supercapacitors provide clean cache flush to NAND flash
 
 ---
 
-## INTERCONNECT & DATA FABRIC
+## MASTER NODE ARCHITECTURE (Non-Worker)
 
-### Custom PCIe x8 Physical Interface (Proprietary Logic)
+**One Intel Core Ultra (Panther Lake) per cluster**
 
-**NOT standard PCIe protocol; entirely custom high-speed SerDes fabric**
+### Dual-Master Topology (Hive-50+)
+- **Master Node A:** GUI Rendering, API Gateway, Workload Orchestration
+- **Master Node B:** Real-Time Telemetry Cache, Inter-Master RDMA Sync, Failover Arbiter
 
-#### Pin Allocation:
-- **Pins 1-19 (Compute Fabric):** 300 GB/s peer-to-peer bandwidth
-  - High-speed custom SerDes (not standard PCIe)
-  - Native HDMI 2.1 FRL video (4K @ 120Hz or 8K @ 60Hz uncompressed)
-  - Native multi-channel audio (Dolby Atmos, 8-channel linear PCM)
-  - GPU-to-GPU and CPU-to-Memory DMA (direct peer-to-peer)
-  - Zero-copy inter-architecture transfers (x86 ↔ ARM)
+### Storage Layout
+**Primary Boot eMMC (128GB - Factory Locked):**
+- Immutable OS kernel, core drivers, security boot code
+- Hardware write-protect (eFuses blown from factory)
+- Cannot be overwritten under any circumstance
 
-- **Pins 20-24 (Guardian Management Bus, "Mega-Yap" Line):** Isolated, air-gapped from compute
-  - Dedicated to ESP32-P4 Guardian chip only
-  - Cannot be hijacked by rogue CPU code
-  - **Physically shorter pins:** Break contact first (~1-2ms before data pins) during extraction
-  - Triggers microsecond electrical isolation sequence
-  - IEEE 1588 PTP hardware clock (microsecond time sync)
-  - RPM offset commands (harmonic resonance prevention)
-  - Force-shutdown signals
-  - Status polling from all 100 Guardian chips simultaneously
-  - Telemetry stream (12-sensor 6DoF data real-time)
+**Secondary M.2 NVMe (User-Upgradable):**
+- Docker container registry metadata (images stored on worker nodes)
+- OS file caches, custom cluster configuration
+- Fully user-manageable, supports hot-swapping
+
+**Optional: Intel Optane Persistent Memory**
+- For flagship Hive-100 systems, Optane provides non-volatile master node memory
+- Zero RAM-to-flash dump required on power failure
+- Wakes from complete power loss in nanoseconds
+
+### Never-Shutdown Operation
+- Master node idles at minimal power consumption but never powers down
+- Continuously monitors all worker nodes via the SpeedFlow management bus
+- Ready to orchestrate workloads at microsecond latency on demand
+
+---
+
+## INTERCONNECT ARCHITECTURE: MasterFlow & SpeedFlow
+
+### MasterFlow (PCIe Gen 6 Data Fabric)
+**Pins 1-19 of custom PCIe x8 connector**
+
+- **Protocol:** Native PCIe Gen 6 with PAM4 (Pulse-Amplitude Modulation 4-level) signaling
+- **Bandwidth:** 64 GT/s per lane × 19 lanes ≈ **300+ GB/s bidirectional peer-to-peer**
+- **Signaling:** PAM4 (4 voltage levels per cycle = 2 bits/cycle)
+- **Error Correction:** Mandatory FEC (Forward Error Correction) with FLIT Mode (256-byte packets)
+- **Retimer Placement:** Active Gen 6 retimers placed every 100-120mm on the 24-layer Megtron 6 backplane
+- **Trace Routing:** Back-drilled vias, zig-zag trace patterns, ultra-homogeneous glass cloth to prevent fiber-weave skew
+- **Features:** Native HDMI 2.1 FRL video tunneling, multi-channel audio, native DMA
+
+### SpeedFlow (Guardian Management Bus)
+**Pins 20-24 of custom PCIe x8 connector**
+
+- **Architecture:** Air-gapped, isolated from main data fabric
+- **Protocol:** Proprietary high-speed I3C-based management with hardware crypto
+- **Purpose:** Power gating, TPM 2.0 virtualization, emergency shutdown, fan/pump speed control
+- **Breakaway Timing:** Disconnects first (~2ms before compute pins), triggering galvanic isolation before data pins separate
+- **Bandwidth:** Sufficient for real-time 12-sensor 6DoF telemetry streaming, microsecond-level corrections
 
 ### External Networking (Master Backplane Only)
+**10× 10Gbps Ethernet (RJ45/SFP+)**
+**2× 100Gbps QSFP28 Ports**
 
-**Hive-10 through Hive-100 all feature:**
-- **10× 10Gbps Ethernet ports** (RJ45/SFP+) - routed individually
-- **2× 100Gbps QSFP28 ports** - for enterprise uplink or inter-chassis stacking
-- Internal Broadcom/Marvell enterprise-grade switch ASIC (Tomahawk or Prestera class)
-- Dynamically splits 200Gbps external bandwidth across all worker nodes via intelligent traffic shaping
-- VLAN management and QoS enforcement
-
-**Critical Design Decision:** Worker nodes have ZERO external network connectivity. All inter-node data flows through the internal 300 GB/s DMA fabric to the Master Node, then to the external world via Ethernet ports. This eliminates node-to-node network latency entirely.
-
-### Internal Switch Fabric ASIC
-
-- Embedded directly on 24-layer motherboard (Megtron 6 substrate for Hive-50/75/100)
-- Marvell Prestera or Broadcom Tomahawk-class silicon
-- Dynamically splits 200Gbps external (10× 10G + 2× 100G) across 100 worker nodes
-- Isolates external ingestion traffic from critical internal peer-to-peer DMA lanes
-- QoS enforcement (prioritizes critical paths)
-- VLAN isolation for multi-tenant scenarios
+- Worker nodes have ZERO external network connectivity
+- Internal enterprise-grade Broadcom/Marvell ASIC switch handles all routing
+- Dual 100Gbps ports enable inter-chassis Hive stacking (200Gbps aggregate fabric)
 
 ---
 
-## THERMAL MANAGEMENT SYSTEM
+## POWER DELIVERY: Triple-Stage GaN Architecture
 
-### Isolated Per-Node Cooling Architecture
+### Stage 1: Redundant External PSUs
+- Dual standard AC wall outlets (110V-240V, auto-detecting)
+- Dual independent GaN power modules
+- Output: 400V DC bulk backplane (current-limiting soft-start over 5 seconds)
 
-**CRITICAL DESIGN PRINCIPLE: Each node is 100% self-contained; NO global water system.**
+### Stage 2: Per-Node Primary GaN Module (25mm × 25mm)
+- Converts 400V DC → node-specific voltages (0.8-1.1V for compute, 5V/12V for ancillary)
+- Contains **2× 750F supercapacitors** internally (onboard UPS protection)
+- Integrated current-limiting and fault protection
 
-**Components per node:**
+### Stage 3: Per-Node Secondary AC-to-DC GaN Module (Always-On Standby)
+- Takes direct AC input from the backplane PCB
+- Zero-load standby mode, ready to instantly assume power authority if Stage 2 fails
+- Microsecond handoff on primary module failure
+- **Supercapacitor Bridge:** Local twin 750F caps hold the node alive during the handoff (~1μs)
 
-#### 1. Magnetic-Levitation Pump (Mini)
-- 60mm diameter (compact within 20mm pod height)
-- Electromagnetic levitation (zero friction, no bearings)
-- Max 25,000 RPM nominal (tested to 35,000 RPM)
-- Capable of pushing water through high-density radiator fins
-- Powered by node's local supercapacitors during hot-swap extraction
-- Operates inside sealed, non-conductive liquid chamber
-- **Amperage requirement:** High-current coils generate massive magnetic flux to levitate pump rotor through copper chamber walls (non-conductive barrier between coils and liquid)
+### Global Supercapacitor Banks
+- **Hive-10:** 10× 750F backplane caps
+- **Hive-25:** 25× 750F backplane caps
+- **Hive-50:** 50× 750F backplane caps
+- **Hive-75:** 75× 750F backplane caps
+- **Hive-100:** 100× 750F backplane caps (total 200 backplane + 200 node = 400 total)
 
-#### 2. Dual Radiator Array (Series Configuration)
-- **Radiator 1 (Pre-Chill):** First pass through coolant; initial heat exchange
-- **Radiator 2 (Deep-Freeze):** Second pass; final thermal scrubbing
-- Both positioned in-line with 50mm blower fan
-- Optimized fin density for 25,000 RPM airflow
+**5-Second Pre-Charge Sequence:**
+- Current-limiting resistors engage for full 5 seconds
+- All 400 supercapacitors (backplane + nodes) charge in parallel
+- At 5.0 seconds: Caps reach 100%, resistors bypass, unrestricted power available
+- At 5.0 seconds: Master Panther Lake wakes, Master 120mm MagLev fan → 500 RPM
+- At 5.5-55.0 seconds: Staggered 0.5-second node wake-up cascade
 
-#### 3. 50mm MagLev Hubless Blower Fan (Frictionless Marvel)
-- Max 25,000 RPM nominal (tested to 35,000 RPM)
-- **500 RPM hard floor:** NEVER spins below this speed (prevents heat soak)
-- **Zero friction design:** Rotor floats on magnetic field
-- **2.5mm air gap around entire fan** (hubless appearance)
-- Blower-style centrifugal design (not axial)
-- Can function as regenerative generator during power loss (kinetic → electrical conversion)
-- Driven by 6DoF magnetic levitation stabilization array (12 sensors per node)
+### Cooling-Specific Power Control
+User-customizable emergency extraction profiles (via GUI):
+- **Option A (100% Data Dump):** All supercap power to RAM/VRAM backup, fan coasts naturally
+- **Option B (100% Hard Brake):** All power to electromagnetic fan deceleration, data sacrificed
+- **Option C (50/50 Balanced):** Split power between braking and data dump
+- **Option D (Regenerative Harvest):** MagLev fan acts as generator, extending backup window for slower, safer deceleration
 
-#### 4. Copper Water Blocks
-- Mounted on CPU, GPU, RAM, storage controllers
-- Liquid metal (Gallium-Indium alloy) thermal interface material
-- Ultra-low thermal resistance (~10°C across interface)
+---
 
-#### 5. Passive Copper Heatsinks
-- For SSDs, VRMs, other passive components
-- Receive post-radiator air (cooler exhaust stream)
-- Passive heat dissipation to surrounding air
+## COOLING SYSTEM: Isolated Per-Node Loops (No Global Water System)
 
-**Air Flow Path:**
+### Critical Design Constraint
+**ZERO global water cooling system. Each node is a 100% self-contained, sealed liquid loop. No inter-node fluid connections.**
+
+### Per-Node Components
+1. **60mm MagLev Centrifugal Pump**
+   - Magnetically levitated impeller, no mechanical bearings
+   - Max 25,000 RPM (production), tested to 35,000 RPM
+   - Sealed inside pod, externally isolated from electrical traces
+   - High-amperage drive electromagnets (requires dense flux field through composite wall)
+
+2. **Sealed Copper Tubing with Dyed Coolant**
+   - User-selectable dye color at order time
+   - Liquid metal (indium-gallium) or phase-change TIM applied directly to de-lidded silicon
+   - 0.1mm skived copper micro-channel plates
+
+3. **Dual Micro-Radiator Stack**
+   - Rad 1 (Pre-Chill): Cools liquid immediately after CPU/GPU blocks
+   - Rad 2 (Deep Freeze): Final temperature scrubbing before liquid returns to pump
+   - Straight-line wind tunnel: Front intake → Rad 1 → 50mm MagLev fan → Rad 2 → Rear exhaust
+
+4. **50mm MagLev Hubless Blower Fan (Per Node)**
+   - Max 25,000 RPM production speed
+   - Centrifugal blower design for high static pressure (essential for dense radiator fins)
+   - **Hubless rotor:** No visible central motor hub, floats on pure magnetic field in 2.5mm air gap
+   - **45-Degree Containment Electromagnets:** Active levitation that counters gravity during extraction
+   - **6DoF Stabilization:** 12 magnetic sensors (4 positions × 3 per position) track fan position at 1kHz, apply microsecond corrections
+
+5. **Passive Heatsinks for Ancillary Components**
+   - VRM (Voltage Regulator Module) copper heatsinks
+   - SSD passive blocks, cooled by post-radiator airflow
+
+### Thermal Loop Airflow Path
 ```
-[Front Intake] → [Radiator 1 (Pre-Chill)] → [50mm MagLev Fan] → 
-[Radiator 2 (Deep-Freeze)] → [Rear Exhaust]
+[FRONT INTAKE] 
+    ↓ (35 CFM static pressure)
+[Radiator 1 - Pre-chill]
+    ↓
+[50mm MagLev Fan - Centrifugal push]
+    ↓
+[Radiator 2 - Deep freeze]
+    ↓
+[Copper heatsink zone for SSDs/VRMs]
+    ↓
+[REAR EXHAUST] (15°C delta rise)
 ```
 
-**Liquid Flow Path:**
-1. MagLev pump draws cool liquid from Radiator 1 outlet
-2. Liquid forced to CPU/GPU water blocks (high-speed flow)
-3. Hot liquid exits blocks; enters Radiator 1 input
-4. Pre-chilled liquid exits Radiator 1; pushed by 50mm fan through Radiator 2
-5. Liquid exits Radiator 2; cycles back to pump intake
-
-**Coolant Customization:**
-- Dyed, user-selectable color (RGB theme customization in GUI)
-- High-performance thermal fluid with corrosion inhibitors
-
-### Master Node Cooling (Single Large Loop)
-
-- One 120mm MagLev levitating fan at chassis centerpiece
-- Cools: Master Panther Lake CPU, 300Gbps switch ASIC, GaN PSU heatsinks
-- Dual-intake (both sides); rear exhaust
-- Never turns off (master node never shuts down)
-- POV (Persistence of Vision) display capability (beta feature at higher RPMs)
-
-### Cooling Performance Benchmarks
-
-**Rockchip/ARM Nodes:**
-- Minimal thermal load
-- Passive cooling viable; active cooling for overclocking
-
-**Standard x86 Nodes (Panther Lake solo):**
-- 35-45W thermal output
-- Dual-radiator + 25k RPM fan maintains 45-55°C
-
-**Storage Node (RAID cache):**
-- Active cooling required for sustained 24/7 operation
-- Balanced thermal load across NVMe + SATA
-
-**RTX 5050/5060 Nodes:**
-- 90-115W thermal output
-- Dual-radiator + 25k RPM fan handles indefinitely at 55-65°C
-
-**RTX 5070/5080/5090 Nodes:**
-- 130-200W+ thermal output
-- Dual-radiator + 25k RPM fan at maximum utilization
-- Active thermal monitoring required (Guardian chip throttles if approaching 85°C)
-
-**Tesla V100 Nodes (THE STAR OF 2026):**
-- 300W+ thermal output
-- **Validated:** Dual-radiator + 25k RPM fan maintains ~60°C under full synthetic load
-- Perfect balance between enterprise compute density and desktop-sized enclosure
-- Target applications: AI training, scientific computing, professional rendering
+### Master Node Cooling (Global Centralized)
+- Dedicated 120mm MagLev levitating fan (centerpiece aesthetic)
+- Handles thermal load of Master Panther Lake CPU + 300Gbps network switch ASIC + backplane supercapacitor banks
+- Never stops (runs 500 RPM minimum, same as worker nodes)
+- Visible levitation effect is primary visual art of the chassis
 
 ---
 
-## THE GUARDIAN CHIP: ESP32-P4 (Per-Node Intelligence Core)
+## MAGNETIC LEVITATION (MagLev) SYSTEM
 
-### Dual-Core RISC-V @ 400MHz Architecture
+### 12-Sensor 6DoF Array Per Node
+**Total for Hive-100: 1,200 individual magnetic sensors**
 
-**Core 0: Kinetic Flight Control (Dedicated Real-Time Loop)**
-- 12-sensor 6DoF magnetic levitation calculations
-- Floating-point geometry computations (RISC-V DSP extensions)
-- Electromagnet current adjustments (<100μs response time)
-- MagLev pump speed modulation
-- 50mm fan RPM ramping and braking control
-- **Processing Load:** <10% of Core 0 capacity; 90% idle time waiting for next 1ms sensor cycle
+**Layout:** 4 cardinal positions (90° apart) × 3 sensors per position
+- **One straight sensor** (parallel to pod wall)
+- **One canted 45° left**
+- **One canted 45° right**
 
-**Core 1: The Security Shield (Async Security & TPM Engine)**
-- Virtual TPM 2.0 emulation (hardware crypto accelerators)
-- AES-256, SHA-2, RSA, ECC cryptographic operations
-- Virus/tamper detection on custom PCIe x8 management bus
-- ACPI state management (handles OS sleep/wake commands)
-- 24-hour rolling FIFO diagnostic log compression
-- MicroLED JSON animation parsing during idle cycles
-- **Smart Load Balancing:** If Core 1 exceeds 90% utilization, RTOS scheduler automatically offloads non-critical tasks to Core 0's idle pool
+This creates full 6-degree-of-freedom positional tracking: X, Y, Z position + Pitch, Roll, Yaw rotation
 
-### Memory Architecture (Maximum Addressable)
+### Frequency Isolation (No Interference)
+- Drive electromagnets operate at 20-50 kHz PWM carrier
+- Differential sensor pair cancellation: Opposite sensor pairs mathematically cancel the drive field noise
+- Digital low-pass filters block drive frequency; mechanical motion (500-25,000 RPM) passes through cleanly
 
-**64MB High-Speed Octal-SPI PSRAM** (hard silicon limit for ESP32-P4)
-- 12-sensor 6DoF stabilization loop: <128 KB
-- Virtual TPM 2.0 cryptographic registry: <256 KB
-- Rolling 1-hour diagnostic FIFO chunks: 2-4 MB each
-- MicroLED frame buffer: ~512 KB
-- Heap buffer for inter-core communication: ~256 KB
-- **Utilization at peak load:** ~5-6 MB
-- **Remaining headroom:** 10-15× more memory than peak consumption; zero heap pressure
+### Hubless Rotor Design
+- **No central axle:** Fan blade assembly is a floating ring
+- **Permanent magnets** on outer circumference of rotor
+- **Stator coils** hidden inside pod walls
+- **2.5mm air gap:** Fan floats on pure magnetic field, completely frictionless
+- At 25,000 RPM, the blade edges move at ~half supersonic speed with zero bearing friction
 
-### Dual eMMC Storage (Per Guardian Chip)
+### Active Stabilization Loop
+- ESP32-P4 Guardian Core 0 applies corrections every 1 millisecond
+- Corrections are <0.1mm magnitude, smooth (zero jerk)
+- 12-sensor data fed through multi-dimensional kalman filters
+- Produces perfectly centered, whisper-quiet levitation across entire RPM range
 
-**Factory-Locked eMMC #1 (Non-Replaceable, 25-32GB):**
-- Soldered via BGA (cannot be removed without destroying PCB)
-- Hardware write-protect fuses permanently blown at factory
-- Contents:
-  - Immutable bootloader and firmware
-  - Safety envelope boundaries (25,000 RPM production ceiling hardcoded)
-  - Microsecond math tables for 6DoF levitation
-  - Base cryptographic public keys (Master Node identity verification)
-  - Baseline sensor calibration data
-- **Lifespan:** 10+ years (read-only operation has zero silicon wear mechanism)
-- **Benefit:** Cannot be hacked, bricked, or corrupted by any software
+### 45-Degree Containment Electromagnets
+- Fire during physical extraction to fight gravity
+- Hold rotor suspended at any angle (even 90° parallel to ground)
+- Release only after rotor reaches 0 RPM
+- Prevent catastrophic blade strike during hot-swap extraction
 
-**Replaceable eMMC #2 (64GB, User-Accessible, Micro-Socketed):**
-- Standard eMMC module in easy-access socket
-- Fully user-configurable contents:
-  - Virtual TPM 2.0 cryptographic keys and certificates
-  - Custom fan/thermal profile maps (JSON scripts)
-  - User-defined MicroLED animations and effects
-  - Rolling 24-hour blackbox diagnostic logs
-- **Customizable FIFO Retention:** Default 24 hours (user can adjust via Master GUI)
-- **Automatic Purge:** Logs older than configured limit are deleted immediately
-- **Exception:** If node crashes, logs are locked Read-Only until reviewed
-
-### TPM 2.0 Emulation (Hardware-Accelerated)
-
-- Runs natively on ESP32-P4 dedicated hardware crypto accelerators
-- Presents standard TPM 2.0 interface to Windows Server & Ubuntu
-- Handles cryptographic handshakes without burdening main host CPU
-- Enables Secure Boot, BitLocker, and shielded VM verification
-- Completely air-gapped from main compute CPU (zero hijacking risk)
-
-### 12-Sensor 6-Degrees-of-Freedom Array (Per Node)
-
-**Sensor Arrangement:**
-- Three orientations (straight, 45° left, 45° right) × four 90° compass points = 12 total sensors
-- Arranged in a quad-ring around the hubless fan rotor perimeter
-
-**Tracking Capability:**
-- X-axis position (left/right translation)
-- Y-axis position (forward/backward translation)
-- Z-axis position (up/down translation)
-- Pitch (forward/backward tilt)
-- Roll (side-to-side tilt)
-- Yaw (rotational twist)
-
-**Real-Time Correction:**
-- 1-millisecond measurement interval
-- Differential AMR (Anisotropic Magnetoresistive) sensors with frequency isolation
-- Stray electromagnetic field cancellation via dual-sensor differential pairs
-- Microsecond-scale electromagnet adjustments prevent physical wobble
-
-**Containment Magnets (45-Degree Angled):**
-- Prevent gravity-induced sag when pod is tilted during hot-swap extraction
-- Remain engaged even if node pulled to 90-degree angle parallel to ground
-- Automatically disengage after fan reaches 0 RPM
+### Transparent Magnetic Shielding (Between Nodes)
+- **3mm air-gapped partition walls** use Transparent Conductive Oxide (TCO) or Graphene Micromesh Metamaterial (GMM)
+- **Eddy-current cancellation:** High-frequency magnetic ripple from one node's pump/fan hits the TCO and generates opposing eddy currents, neutralizing the field before it can interfere with adjacent node sensors
+- **>99% optical transparency:** No visual impact on the clear aesthetic
+- Negligible weight addition
 
 ---
 
-## MEMORY & STORAGE ARCHITECTURE
+## ELECTRICAL ISOLATION & HOT-SWAP SAFETY
 
-### Per-Node System RAM
+### Solid-State Galvanic Isolation (Per Node)
+- Opto-isolators directly behind gold contact fingers
+- Trigger latency: <1 microsecond via hardware interrupt
+- Result: All external pins drop to 0.0V before physical separation completes
 
-**Standard Configuration:**
-- LPDDR4x or LPDDR5x (10,700 Mbps on LPDDR5x in 2026)
-- 16GB-32GB typical
-- **Integrated NVDIMM (Non-Volatile DIMM) Protection:**
-  - System memory coupled with high-end flash controller
-  - On power loss: Supercapacitors power rapid DMA → flash
-  - On power restore: Data streams back → memory registers
-  - OS wakes up at exact millisecond of interruption (zero boot delay)
+### Extraction Sequence (User Pulls Node at Any Moment)
+1. User begins pulling pod from chassis
+2. Pins 20-24 (SpeedFlow) break contact first (~2ms early, shorter fingers)
+3. Guardian detects breakaway, fires opto-isolator command instantly
+4. All external compute/power pins → 0.0V within 1 microsecond
+5. Parallel backup power redirects to supercaps
+6. MagLev fan initiates smooth deceleration (user-customizable ramp profile, default 0.5-1.0 seconds)
+7. Active crowbar circuit dumps remaining supercap energy to onboard resistors (harmless heat)
+8. 45-Degree magnets hold fan suspended if pod is tilted
+9. Pod fully extracted; all pins at absolute 0.0V; safe to touch
 
-**Flagship Configuration (Panther Lake + Tesla V100):**
-- 128GB-256GB Intel Optane persistent memory (non-volatile)
-- Merges DRAM speed (sub-100ns latency) with SSD permanence
-- Zero power-loss risk for system state
-- Only GDDR7 VRAM on Tesla die requires supercap-powered emergency backup
+### User-Customizable Power Routing (During Hot-Swap)
+Via GUI, user selects:
+- **Option A:** 100% data backup (fan coasts, supercaps → RAM/VRAM dump)
+- **Option B:** 100% hard brake (fan → electromagnetic stator braking, data sacrificed)
+- **Option C:** 50/50 split (balanced approach, default recommended)
+- **Option D:** Regenerative harvest (fan acts as generator, extends backup window, 45° magnets suspend rotor during multi-second deceleration)
 
-**Master Node:**
-- Intel Optane persistent memory (200GB+)
-- Master A: Holds current GUI state, Docker registry, configuration maps
-- Master B: Holds high-speed in-memory cache of all 100 nodes' telemetry
-- Synchronized via Zero-Copy RDMA (no CPU overhead)
+### Anti-Twist Deceleration Buffer (Default)
+- Fan doesn't slam to 0 RPM; smooth exponential ramp (200-500ms)
+- Prevents gyroscopic torque jerk from wrenching pod out of user's hand
+- Supercap power smoothly ramps down fan + simultaneously executes memory backup
+- User experiences firm hum/resistance in hand, zero violent snap
 
-### Per-Node Storage Options
-
-**NVMe Configuration:**
-- 1× NVMe Gen 5 SSD (standard fast storage)
-- 2× NVMe Gen 5 SSDs (high-capacity fast storage)
-
-**SATA Configuration:**
-- 1× 2.5" SATA SSD
-- 2× 2.5" SATA SSDs
-- 4× 2.5" SATA SSDs (storage nodes only)
-
-**Storage Node Specialization:**
-- Panther Lake CPU dedicated to RAID management
-- 6× NVMe Gen 5 + 2-4× SATA SSD configuration
-- Acts as distributed cluster cache, NAS, or local backup pool
-- RAID-6 support for enterprise data protection
-
-**Master Node NVMe (User-Upgradable):**
-- M.2 slot (not soldered; easily swappable)
-- Holds Docker container metadata registry
-- Caches downloaded OS images (can be manually purged to save space)
-- Allows OS image reuse: Download Ubuntu 24.04 once, deploy to 10 nodes
-
-### Bare-Metal Provisioning & Live Container Migration
-
-**Default State:** All nodes boot with lightweight Ubuntu Server + Docker container environment
-
-**Provisioning Workflow:**
-1. User selects "Deploy Windows Server" for Node 5 in Master GUI
-2. Master Node A commands active Docker containers on Node 5 to pause
-3. **Live Container Migration:** Containers are packed and moved via 300 GB/s DMA to Node 6-7
-4. Node 5 becomes empty; begins self-flashing pipeline
-5. Node 5 downloads Windows Server ISO from Master's NVMe cache (or internet if not cached)
-6. Node 5's local CPU executes flashing job independently (no Master CPU involvement)
-7. Verification complete: Node 5 reboots into bare-metal Windows Server
-8. Master GUI updates to show Node 5 as "Available for Windows Tasks"
-
-**Timeline:** Entire provisioning cycle <2 minutes per node
-
-**OS Backup Strategy:**
-- Each node's NVMe stores golden-image recovery partition
-- If node fails to boot 3 times: Guardian chip forces local restore
-- No internet/Master Node contact required
-- Recovery completes in seconds using local storage
+### Backplane Arc Protection
+- Independent monitoring circuit detects capacitance drop as pod moves
+- Kills 400V supply to that slot before physical pins separate
+- Prevents electrical arcing across the gold contact gap
 
 ---
 
-## INTER-NODE & INTER-CHASSIS NETWORKING
+## GUARDIAN CHIP (ESP32-P4) ARCHITECTURE
 
-### Intra-Chassis Communication (Pins 1-19: 300 GB/s)
+### Hardware Specifications
+- **Processor:** Dual-core RISC-V @ 400 MHz
+- **Memory:** 64MB Octal-SPI PSRAM (absolute hardware limit)
+- **Crypto Accelerators:** Native AES-256, SHA-2, RSA, ECC
+- **Special Hardware:** Pixel Processing Accelerator (PPA) for MicroLED rendering, TPM 2.0 virtualization engine
 
-**Protocol:** Proprietary custom SerDes (NOT standard PCIe)
-- High-speed peer-to-peer DMA between any two nodes
-- Direct memory-to-memory transfers
-- Zero-copy architecture; minimal CPU overhead
-- Heterogeneous transfers (x86 ↔ ARM) with automatic byte-swapping
+### Core 0: Kinetic Stabilization (Highest Priority, Non-Maskable Interrupt)
+- **Duty:** 12-sensor 6DoF magnetic levitation math + 1ms correction loop
+- **Pump PWM control** (variable speed based on node load temperature)
+- **Fan PWM control** (from 500 RPM floor to user-commanded max speed)
+- Uses ~20% of available clock cycles, rest idle
+- If Core 1 overloads, Core 0's idle cycles can be harvested for non-critical tasks (log compression, display rendering)
 
-**Data Types:**
-- GPU VRAM ↔ CPU RAM (tensor transfer)
-- CPU RAM ↔ NVMe (checkpoint/restore)
-- GPU VRAM ↔ NVMe (model weights)
+### Core 1: Security & Telemetry (Dynamic Priority)
+- **Virtual TPM 2.0 engine** (hardware crypto accelerators)
+- **Virus/tamper detection** (continuous monitoring of host CPU power rails, memory access patterns)
+- **MicroLED display rendering** (240p matrix on pod casing, GPU-accelerated via PPA)
+- **24-hour rolling FIFO diagnostic log** (1Hz baseline idle mode → 10Hz-144Hz dynamic refresh under load)
 
-### Video & Audio Routing (Native HDMI 2.1)
+### Guardian Storage Per Node
+**Factory-Locked eMMC (Non-Replaceable):**
+- Bootloader, safety rules (25k RPM hard ceiling, voltage gates, emergency timeout logic)
+- Immutable firmware (read-only after factory flash)
+- Lives forever, zero wear risk (no software writes)
 
-**Video Output:**
-- Any worker node can output native, uncompressed video
-- Custom PCIe x8 pins → internal crosspoint switch ASIC → physical HDMI port
-- Resolution: 4K @ 120Hz or 8K @ 60Hz
-- Latency: <5ms (hardware switching; no software compression)
-- Bandwidth: Full HDMI 2.1 FRL capacity
+**User-Replaceable 64GB eMMC (Socketed):**
+- Custom thermal/fan profiles (user JSON scripts)
+- Virtual TPM 2.0 key registry
+- MicroLED animation definitions
+- **24-hour rolling diagnostic FIFO** (1-hour log chunks auto-delete after 24 hours; custom expiration via GUI)
 
-**Audio Output:**
-- Native multi-channel audio (Dolby Atmos, 8-channel linear PCM)
-- Mixed into HDMI 2.1 FRL packet structure
-- Decoded by Master Node for speaker output
+**64MB PSRAM:**
+- Runtime heap for all computation
+- 15× more than needed under peak load
+- Passive air cooling only (no liquid cooling; would overheat the P4)
 
-### Master-to-Guardian Synchronization (Pins 20-24: "Mega-Yap" Management Bus)
+### Guardian Power Profile
+- Idle: <50mW
+- Full load (all cores + TPM + MicroLED rendering): 500-800mW
+- Passive air cooling via node pod's exhaust airflow
 
-**Protocol:** Custom synchronous parallel bus (high-bandwidth management)
-
-**Capabilities:**
-- IEEE 1588 PTP hardware clock (microsecond-level time sync)
-- RPM offset commands (harmonic resonance prevention)
-- Force-shutdown signals
-- Status polling from all 100 Guardian chips
-- Telemetry stream (12-sensor data, temperatures, voltages)
-
-**Guardian Handshake:**
-1. Master sends harmonic resonance prevention command
-2. Guardian acknowledges; applies ±50 RPM jitter to prevent standing waves
-3. Guardian streams 12-sensor telemetry (6DoF position, temperature, voltage)
-4. Master updates 240p MicroLED visualization and 3D dashboard
-
-### Inter-Chassis Stacking (QSFP28 Links)
-
-**Scenario:** Customer buys Hive-10 → adds second Hive-10 → auto-merges to 20-node cluster
-
-**Process:**
-1. Connect two 100Gb QSFP28 DAC cables between chassis
-2. Master nodes detect link via firmware handshake
-3. Software automatically merges into unified topology
-
-**Bandwidth:** 200Gbps aggregate (vs. 300Gbps internal)
-- Still sufficient for inter-chassis communication
-- Smart scheduling: Heavy work within chassis; light syncing between
-
-**Network Topology:** Toroidal Mesh Network (optimized for heterogeneous clustering)
-
-**User Experience:**
-- Single unified GUI showing all 20 nodes
-- Containers auto-balanced across both chassis
-- Transparent to developer (no code changes)
+### Node-to-Guardian Communication
+- Node's host CPU can request speed changes (fan RPM, pump power)
+- Cannot directly control or bypass Guardian
+- Rogue host CPU cannot spin fan to 35k RPM; Guardian firmware enforces the 25k RPM production ceiling
+- All commands sanity-checked against hardware-locked safety limits
 
 ---
 
-## MASTER NODE GUI & ORCHESTRATION SYSTEM
+## MEMORY ARCHITECTURE
 
-### Real-Time 3D Dashboard
+### Worker Node System Memory
+- **Rockchip/MediaTek ARM:** 8-32GB LPDDR5x
+- **Standard Panther Lake:** 64-128GB LPDDR5x
+- **GPU-paired x86 (RTX, GB10, MI300A):** 128-256GB LPDDR5x + GDDR7 (GPU)
+- **High-core ARM (AmpereOne, Altra Max):** 64-128GB LPDDR5x
+- **RISC-V nodes:** 32-64GB LPDDR5x
+- **Intel Optane Option:** 200GB+ non-volatile persistent memory (flagship Hive-100 only)
 
-**Visual Elements:**
-- 3D wireframe models of all 100 hubless fans
-- Live pitch/roll/yaw telemetry from 12-sensor arrays (per-node)
-- Thermal heatmap (blue idle → white 100% load)
-- Data-flow "comet" animations showing DMA transfers
-- MicroLED animation editor (JSON-based custom effects)
-- Power consumption gauge (Watts vs. max 5-7kW)
-- Network traffic visualization
+### VRAM (GPU Nodes)
+- **RTX 5050 Mobile:** 6-8GB GDDR7
+- **RTX 5060 Mobile:** 8-12GB GDDR7
+- **RTX 5070 Mobile:** 12GB GDDR7
+- **RTX 5080 Mobile:** 14-16GB GDDR7
+- **RTX 5090 Mobile:** 24GB GDDR7
+- **NVIDIA Grace Blackwell:** 128GB LPDDR5X Unified (no separate VRAM)
+- **AMD MI300A:** 128GB HBM3 Unified (no separate VRAM)
+- **Jetson/ARM nodes:** Integrated GPU memory in SoC
 
-**Data Synchronization:**
-- Master Node B → Master Node A via Zero-Copy RDMA
-- Telemetry written directly into Master A's shared memory
-- Master A renders 3D graphics at fluid 120Hz refresh rate
-- Zero CPU overhead; no packet processing
+### Mandatory ECC Memory (Prosumer/Enterprise x86 Tier)
+**Applies to:** Intel Xeon 6, AMD EPYC Turin
+- **True Sideband ECC:** 72-bit data bus (64 data + 8 parity)
+- **Soldered Configuration:** Memory dies and ECC parity chips mounted as BGA on the 24-layer Megtron 6 substrate
+- **SECDED Protection:** Single-Error Correction, Double-Error Detection at hardware level
+- **Guardian Monitoring:** Core 1 monitors ECC error rates via hardware error registers; predictive failure detection triggers warnings
+- **Thermal Benefit:** Keeping RAM chilled (45°C) reduces natural thermal electrical noise on 72-bit traces, decreasing bit-flip occurrence rate before hardware ECC activates
 
-### Dynamic MicroLED Customization
-
-**Approach:** JSON-based animation engine
-- Users write custom LED effect profiles
-- Bind colors to Docker container activity, CPU utilization, network traffic
-- Pre-built themes: "Data Flow", "Thermal Heatmap", "Status Breathing", "Off"
-
-**Real-Time Effects:**
-- Container Spark (green burst when new container launches)
-- Data Comets (colored line showing DMA transfers between nodes)
-- Thermal Breathing (blue-to-red gradient representing temperature)
-- Failure Alerts (crimson red for PSU failover or node issues)
-
-### Bare-Metal Node Management
-
-**Drag-and-Drop Provisioning:**
-- Select OS image (Ubuntu, Windows, CentOS, custom)
-- Drag onto node slots in GUI
-- Master orchestrates automatic container migration + flashing
-
-**Power Management:**
-- Global power budget display (Watts vs. max ceiling)
-- Per-node throttling sliders
-- Automatic CPU frequency scaling if approaching power limit
-- Thermal throttle alerts with recommendations
-
-**Emergency Response (User-Customizable):**
-- **Option A (Isolate):** Shut down failed node; migrate workloads
-- **Option B (Thermal Buffer):** Throttle neighbors; ramp their fans
-- **Option C (Fail-Forward):** Keep running on passive cooling
-- **Option D (Total Blackout):** Shut down cluster or specific node pools (for tightly-coupled jobs)
+### NVDIMM Architecture (All Nodes)
+- System RAM backed by on-node NVMe flash
+- Supercapacitors sustain power during emergency dump
+- **On power loss:** Full RAM contents copied to NVMe via DMA (bypasses CPU)
+- **On restore:** Flash controller copies data back to RAM; OS resumes from exact frozen state
 
 ---
 
-## DATA INTEGRITY & SAFETY MECHANISMS
+## SOFTWARE ARCHITECTURE
 
-### Multi-Tiered NVDIMM Protection
+### Default State: Ubuntu Server + Docker Swarm
+- All nodes run containerized workloads by default
+- Master node handles orchestration
+- Global Docker swarm managed by Master via standard Kubernetes APIs
 
-**Per-Node NVDIMM Mechanism:**
-1. System memory tightly coupled with integrated flash controller
-2. On power loss: Supercapacitors power rapid DMA dump (RAM → flash)
-3. On power restore: Flash controller streams data back (flash → RAM registers)
-4. OS wakes up at exact millisecond of interruption
+### OS Support
+- Ubuntu Server (default)
+- Windows Server (WHQL-certified, BitLocker, Secure Boot)
+- RHEL, openSUSE
+- Custom ARM/RISC-V distributions
 
-**Timeline Validation:**
-- LPDDR5x 32GB dump: ~2.7 seconds at Gen 5 NVMe speeds
-- Supercap energy window: 3-5 seconds available
-- Regenerative fan braking: Extends window by 2-3 additional seconds
-- **Margin:** 50%+ safety headroom
+### Distributed Self-Flashing Provisioning
+- **Trigger:** User clicks "Deploy OS" in Master GUI
+- **Network Boot:** Target node boots PXE over MasterFlow fabric
+- **Image Source:** Master NVMe cache (or direct download if not cached)
+- **Node Verification:** Each node verifies hashes against virtual TPM 2.0
+- **Parallel Flash:** Up to 50 nodes simultaneously flash their storage
+- **Master CPU:** Completely unburdened (DMA handles all transfers)
+- **Speed:** Full OS image deployed in <4 seconds per node
 
-### Guardian Dual eMMC Design
+### Live Container Migration Before OS Flash
+- Docker container states saved via NVDIMM to local NVMe
+- Containers migrated to neighbor nodes over 300 GB/s MasterFlow DMA
+- Pod extracted → reflashed with new OS → containers resume on adjacent node
 
-**Factory-Locked eMMC:**
-- Immutable, un-hijackable firmware
-- BGA soldered (destruction = removal)
+### Time Synchronization: Hardware IEEE 1588 PTP
+- Master clock distributed via SpeedFlow (pins 20-24)
+- Microsecond-accurate across all nodes
+- Overrides OS-level NTP drift
+- Resolves Windows/Linux clock conflict at BIOS level
 
-**Replaceable 64GB eMMC:**
-- Custom profiles, TPM keys, diagnostic logs
-- Easy micro-socket swap
-
-### 24-Hour Rolling Blackbox Logs
-
-**Per Node:**
-- Continuous telemetry: 12-sensor position, RPM, voltage, temperature
-- Rolling FIFO: Logs older than 24 hours auto-purged (customizable via GUI)
-- On crash: Logs locked Read-Only for post-mortem analysis
-
-**Engineering Benefit:**
-- Engineer pulls failed node's eMMC
-- Reviews last 24 hours of microsecond-accurate data
-- Identifies root cause (e.g., "Voltage droop on LPDDR5x rail at 18:43 UTC")
-- Iterates on next hardware revision
-
----
-
-## HOT-SWAP EXTRACTION SAFETY
-
-### The Breakaway Sequence (User Pulls Node While Running)
-
-**Timeline:**
-1. **0ms:** User begins pulling node from chassis
-2. **1-2ms:** Pins 20-24 (Guardian line) break contact first (physically shorter pins)
-3. **<1μs:** Guardian chip detects loss; solid-state GaN gates slam shut → **0.0V external**
-4. **0-100ms:** Simultaneously:
-   - Internal supercaps power LPDDR backup (customizable split or 100% backup)
-   - Fan smoothly decelerates (customizable instant or gradual ramp)
-   - 45-degree electromagnets keep fan suspended in 2.5mm air gap
-   - After 0 RPM: Active Crowbar Discharge dumps cap energy as heat
-5. **100-200ms:** Node fully extracted
-6. **Result:** User can touch exposed gold fingers; zero shock risk
-
-### User-Customizable Extraction Profiles (Master GUI)
-
-**Option A: Immediate Silent Isolation (Dead Stop)**
-- Fan hard-clamps from 25k RPM → 0 in milliseconds
-- All supercap power → LPDDR backup
-- Fast, clean preservation
-
-**Option B: Kinetic Energy Harvesting (Regenerative)**
-- Fan acts as generator (2-3 seconds spin-down)
-- Harvested electricity supplements supercaps
-- Extends backup window for complex tasks
-- 45-degree magnets keep fan centered even at 90-degree tilt
-
-**Customizable Split (Default 50/50):**
-- User adjusts slider: 0% brake / 100% backup → 100% brake / 0% backup
-- Smart default: Balanced approach
-
-### Zero-Volt Pin Guarantee (Double-Layer Protection)
-
-**Backplane-Side (Arcing Prevention):**
-- Chassis motherboard monitors each slot's management line
-- Microsecond Pins 20-24 break → backplane cuts 400V DC power to that slot
-- Solid-state GaN switches on backplane fire alongside node-side gates
-- **Result:** By time data pins physically separate, chassis-side power is dead
-
-**Node-Side (Internal Isolation):**
-- Supercapacitors isolated from external pins via internal gates
-- Active Crowbar Discharge: remaining cap energy dumped to pod's copper base as heat
-- Supercaps discharge completely before node exits chassis
+### HDMI 2.1 Output (Native Per-Node)
+- Any node can tunnel uncompressed 4K@120Hz video through MasterFlow pins 1-19
+- Native multi-channel audio (Dolby Atmos, linear PCM)
+- Crosspoint switch ASIC routes selected node's display to physical HDMI port on Master backplane
+- Keyboard/mouse emulated via Guardian HID injection (zero USB hardware needed)
 
 ---
 
-## CHASSIS DESIGN & AESTHETICS
+## FAILURE HANDLING & RECOVERY
 
-### Standard Transparent Edition
+### Fan Catastrophic Failure
+- 12-sensor array detects zero proximity signals
+- Stator power cut instantly (prevent electromagnetic coil meltdown)
+- Local liquid cooling pump maintains circulation (passive heat extraction)
+- Data backup initiated, isolated shutdown, GUI notification
+- User-customizable cascade: Isolate failed node only? Thermal buffer neighbors? Continue operation? Full blackout?
 
-**Pod Casing:**
-- High-strength polycarbonate or chemically strengthened glass
-- Thermal rating: 100°C+ safe (prevents softening from RTX waste heat)
-- Optical clarity: >95% light transmission
+### Power Loss (Graceful Descent)
+- Supercaps engage across all layers
+- All worker nodes execute checkpoint → NVMe dump (not emergency crash dump)
+- Fans slow gradually (no violent mechanical stop)
+- Master completes telemetry to factory-locked eMMC
+- Full cluster resumes in <60 seconds
 
-**Invisible Power & Video Routing:**
-- ITO (Indium-Tin-Oxide) micro-thin traces on pod interior
-- Carries video, power, and telemetry invisibly
-- Transparent; no visible wires or connectors
+### GaN PSU Failover
+- Primary 400V module fails: Secondary AC module assumes power authority (<1μs)
+- Crimson LED alert; user swaps primary module hot
+- Node continues uninterrupted
 
-**240p MicroLED Display:**
-- Embedded directly into pod casing (not on main PCB)
-- Driven by local ESP32-P4 Guardian chip
-- Directional micro-louver coating: Light only emits forward (60° viewing angle)
-- Prevents light bleed between adjacent pods
-
-**Inter-Pod Shielding (3mm Air Gap):**
-- Transparent Conductive Oxide (TCO) or Graphene Micromesh Metamaterial (GMM)
-- Micro-thin nanometer-scale coating
-- Allows 99% of visible light through
-- Blocks ~99% of magnetic flux via eddy-current cancellation
-- Negligible weight penalty
-
-### Master Cooling Copper Spine
-
-**Material:** Oxygen-free copper (high thermal conductivity)
-**Finish:** Polished to highlight engineering aesthetic
-**Visibility:** Partially visible through clear chassis (intentional design)
+### Thermal Threshold
+- Guardian hard-stops node if CPU junction >105°C
+- MicroLED alert; workload migrated
 
 ---
 
-## WIRELESS STANDARDS & OS SUPPORT
+## CHASSIS STACKING & EXPANSION (Hive Mini Scaling)
 
-### Operating System Compatibility
-
-**Supported Operating Systems:**
-- **Ubuntu Server 24.04 LTS** (default, optimized)
-- **Windows Server 2022/2025** (fully supported with TPM 2.0 emulation)
-- **Red Hat Enterprise Linux (RHEL)**
-- **CentOS**
-- **Custom Linux distributions**
-
-**Key Requirement:** Guardian chip runs custom hardened RTOS firmware (non-negotiable for safety)
-
-### Cross-OS Time Synchronization
-
-**Challenge:** Windows defaults to Local Time; Linux defaults to UTC
-
-**Solution:** IEEE 1588 PTP Hardware Clock on Guardian chip
-- Master Panther Lake broadcasts microsecond-accurate time
-- All Guardian chips continuously pull from this master clock
-- Time injection directly to BIOS/UEFI layer (bypasses OS)
-- Result: Even with heterogeneous OS mix, all nodes stay synchronized to the microsecond
+### Inter-Chassis Linking (Hive-10 + Hive-10 = Hive-20)
+- Connect two Hive units via dual 100Gbps QSFP28 DAC cables
+- **Bandwidth:** 200Gbps aggregate inter-chassis link
+- **Software Merge:** Single unified GUI dashboard, all 20 nodes appear as one cluster
+- **Topology:** Toroidal Mesh automatically configured
+- **Failover:** If Master Node A in Chassis 1 fails, Chassis 2's Master Node B assumes primary role
 
 ---
 
-## MANUFACTURING & QUALITY ASSURANCE
+## MICROLED SYSTEM (240p Backplane Display)
 
-### PCB Fabrication (24-Layer, In-House)
+### MicroLED Matrix Specifications
+- Embedded directly into 24-layer Megtron 6 substrate
+- **240p equivalent resolution** (highly dense pixel array)
+- **Refresh Rate:** Dynamic 1Hz-144Hz (varies by system load)
+- **Default State:** All LEDs off (stealth mode)
+- **Activation:** Only illuminates on CPU spike, GPU load, failure alerts, or data transfer
 
-**Substrate Material:** Megtron 6 (Hive-50/75/100); cost-optimized for Hive-10/25
+### Visual Telemetry Language (Customizable via JSON)
+- **Blue Glow:** CPU/GPU active, normal load
+- **White Brilliant:** Full-load state, 100% utilization
+- **Crimson Block:** GaN PSU failover detected (specific slot highlighted)
+- **Flashing Amber Ripple:** Emergency power failure, supercap backup active
+- **Green Comet:** Docker container deployment, synapse-flash per node awakening
+- **Orange Pulse:** Thermal throttle event
+- **Data Comets:** Colored light trails between nodes showing active MasterFlow traffic direction
 
-**Layer Allocation:**
-- **Layers 20-24 (Power Planes):** Strict 400V DC distribution
-  - 2oz-3oz copper thickness for low impedance
-  - Dedicated supercapacitor charging rails
-- **Layers 1-19 (Data/Signal):** All high-speed computation fabric
-  - Controlled impedance routing (Pins 1-19: 300 GB/s)
-  - HDMI 2.1 FRL video lanes (lossless 4K/8K)
-  - Management bus traces (Pins 20-24)
-  - MicroLED driver routes
-  - Buried via technology for signal integrity
-  - EMI shielding between adjacent node sockets
-
-### Fan & Pump Testing Protocol
-
-- All MagLev units stress-tested to **35,000 RPM** (50% margin above 25k production ceiling)
-- Blade structural integrity verified under extreme centrifugal loading
-- Carbon-fiber composite blade construction
-- Bearing gap tolerance: ±0.1mm (critical for levitation)
-- Magnetic field strength validated across -10°C to +60°C thermal range
-- Production firmware locks ceiling at **25,000 RPM** (unhackable via software)
-
-### Supercapacitor Validation
-
-- All 750F caps rated 2.7V continuous, 3.0V peak
-- Pre-formation cycles verify zero internal defects
-- Thermal cycling (-10°C to +60°C): 100 cycles minimum
-- Expected lifespan: 10+ years under standard conditions
-- Automatic replacement notification via Master GUI (optional extended warranty)
-
-### Guardian Chip Certification
-
-- Factory testing of both RISC-V cores
-- Cryptographic accelerator validation (AES, SHA, RSA, ECC all modes)
-- 64MB PSRAM endurance testing (10+ million cycles)
-- TPM 2.0 compatibility with Windows Server & Ubuntu
-- Firmware security audit (no injection vectors)
-- Magnetic sensor per-unit calibration (each 12-sensor array tuned)
-
-### System-Level Validation
-
-- Full 100-node cluster burn-in: 72 hours continuous operation
-- Thermal cycling: 10 startup/shutdown cycles
-- Hot-swap stress: 50 extraction iterations per node (zero data loss)
-- Failover testing: Primary 400V → secondary AC-DC transition
-- Harmonic resonance: All 100 fans simultaneous (vibration measurement <0.1mm)
+### Micro-Louver Directional Optics
+- 60° viewing cone per MicroLED (privacy screen effect)
+- Prevents light bleed through transparent GMM/TCO partition walls
+- Maintains crisp, distinct visual per pod
+- Users can look directly at a specific node and see sharp pixel fidelity
+- Adjacent pods show zero light contamination
 
 ---
 
-## WARRANTY & SUPPORT STRUCTURE
+## PRODUCTION SPECIFICATIONS
 
-### Standard Warranty (1 Year)
+### Manufacturing Process Checklist
+- [ ] All CPUs, GPUs, memory soldered via SMT (zero mechanical sockets)
+- [ ] All processors de-lidded for direct-on-die liquid metal cooling
+- [ ] All NVMe/SATA stripped and soldered directly to PCB
+- [ ] 24-layer Megtron 6 motherboard with back-drilled vias, zig-zag MasterFlow traces
+- [ ] PCIe Gen 6 retimers placed every 100-120mm
+- [ ] ECC memory (sideband) soldered for x86 prosumer/enterprise tier
+- [ ] MicroLED matrix and ITO trace circuits embedded in PCB layers
+- [ ] 100-hour automated factory burn-in (thermal cycling, power transients, PAM4 eye-diagram mapping)
+- [ ] Each node receives custom magnetic levitation calibration profile
+- [ ] All supercapacitors pre-charged and health-tested
+- [ ] Factory-locked eMMC eFuses blown on final validation
+- [ ] Master node Optane persistent memory (if applicable) validated for zero-loss boot
 
-- Manufacturing defects: Full replacement
-- Supercapacitor failure: Free replacement
-- eMMC failure (non-replaceable): Node replacement
-- MagLev motor failure: Node replacement
-- Control board issues: Board replacement
+### Available Cluster Sizes
+| Size | Nodes | Supercaps (Backplane) | Master Nodes | Power Budget | Primary Use |
+|------|-------|----------------------|--------------|--------------|-------------|
+| **Hive-10** | 10 | 10× 750F | 1 | 500W peak | Desktop learning, tinkering |
+| **Hive-25** | 25 | 25× 750F | 1 | 1.25kW peak | Research lab, small AI training |
+| **Hive-50** | 50 | 50× 750F | 2 | 2.5kW peak | Mid-tier enterprise, render farm |
+| **Hive-75** | 75 | 75× 750F | 2 | 3.75kW peak | Data-center simulation |
+| **Hive-100** | 100 | 100× 750F | 2 | 5.0kW peak | Fortune 500, extreme QA testing |
 
-### Extended Support (Optional)
-
-- Remote diagnostics via network
-- Firmware updates & patches
-- 24/7 technical support (enterprise tier)
-- On-site replacement for critical failures
-
-### User-Serviceable Components
-
-- Replaceable 64GB eMMC per Guardian chip
-- Replaceable M.2 NVMe (Master Node)
-- Replaceable GaN PSU modules
-- Coolant color customization (drain/refill standard maintenance)
+### Warranty & Support
+- **Hardware:** 5-year manufacturer defect warranty
+- **Post-100-Hour Burn-In:** Zero infant mortality risk
+- **Field Reliability:** Designed for 9+ years continuous operation
+- **Supercapacitor Replacement:** User-swappable, field-serviceable (only wear component over decade timescales)
 
 ---
 
 ## COMPETITIVE ADVANTAGES
 
-1. **True Heterogeneity:** Only system offering x86 + RTX GPU + Tesla V100 + ARM CUDA + ARM media + ARM 5G in single cluster
-2. **Frictionless Cooling:** Only MagLev design; zero bearing wear; 10+ year lifespan
-3. **Visual Transparency:** Unique clear-chassis aesthetic; engineering art piece
-4. **Microsecond Isolation:** Hardware-level security prevents software-based attacks
-5. **Modular Scaling:** Buy 10 now, add 90 later without rebuilding
-6. **Industrial Design:** Bridges data center and luxury furniture
-7. **Distributed Provisioning:** Nodes self-flash; Master CPU unburdened
-8. **Non-Volatile Safety:** Supercaps + NVDIMM + persistent memory = zero data loss
-9. **Dual-Master Failover:** Enterprise-grade HA built-in
-10. **Tesla V100 Support:** First commercial desktop cluster with enterprise accelerator integration
+1. **Absolute Data Integrity:** NVDIMM + Supercap + Hardware ECC eliminates data loss risk
+2. **Zero-Compromise Performance:** Direct-on-die cooling, 300 GB/s MasterFlow, PCIe Gen 6 PAM4
+3. **Unbreakable Security:** Air-gapped Guardian chip, factory-locked boot eMMC, hardware cryptography
+4. **Aesthetic Engineering:** Transparent chassis, MagLev levitation, MicroLED visualization
+5. **Extreme Density:** 10-100 heterogeneous nodes in a monitor-sized footprint
+6. **Future-Proof:** PCIe Gen 6 ready, upgradable NVMe on Master node, swappable supercaps
 
 ---
 
-## FUTURE ROADMAP
+## ROADMAP & FUTURE
 
-### Phase 2 (Late 2026)
-
-- Liquid cooling quick-disconnects (Dripless QDC for future modular expansion)
-- Native Kubernetes Operator for dynamic node provisioning
-- Wireless network module (optional, 802.11ax for remote management)
-
-### Phase 3 (2027)
-
-- Integrated UPS battery backup modules (optional)
-- 10 Gigabit Ethernet per-node option (future option)
-- Custom blade configurations (user-designed compute modules)
-
-### Phase 4 (2028+)
-
-- Next-generation MagLev (50kW+ thermal capacity)
-- Optane 5th-Gen memory modules
-- AI-driven thermal optimization (ML predicts load, adjusts cooling proactively)
+- **2026 H2:** Add support for next-generation NVIDIA Hopper-successor GPUs
+- **2027:** Quantum error-correction simulation nodes (Intel Tunnel Falls-based)
+- **2027:** Silicon photonics prototyping carrier blade
+- **Custom Integration:** Users can request specific CPU/GPU combinations for bulk orders
 
 ---
 
-## CONCLUSION
+## WARRANTY & SUPPORT
 
-**Nx-Gen (The Hive)** represents the pinnacle of heterogeneous cluster design, merging enterprise-grade reliability with consumer-friendly aesthetics and hobbyist accessibility. The 120×250×20mm node form factor accommodates NVIDIA Tesla V100 accelerators alongside Intel Panther Lake, validated thermal design (60°C under 300W load), and a complete ecosystem of safety, security, and elegance.
-
-It is engineered to last a decade, survive power failures without data loss, and inspire awe in anyone who sees 100 hubless fans spinning silently in mid-air.
-
-It is not just a supercomputer. It is engineering art.
+**5-Year Limited Hardware Warranty**
+- Manufacturing defects fully covered
+- Supercapacitor degradation: Replacement units available for field swap
+- No physical damage from user mishandling
 
 ---
 
-**Document Version:** 2.0  
-**Last Updated:** May 16, 2026 (Complete integration of Gemini conversation insights)  
-**Specification Status:** Final (Ready for Manufacturing Phase)
+**Document Version:** 2.1 (Final Manufacturing Specification)
+**Last Updated:** May 17, 2026
+**Status:** Ready for Assembly Line
